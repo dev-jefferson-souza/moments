@@ -11,12 +11,14 @@ import { environment } from 'src/environments/environment';
 })
 export class HomeComponent {
   faSearch = faSearch;
+  searchParam = '';
 
   allMoments: IMoment[] = [];
   moments: IMoment[] = [];
   baseApiUrl = environment.baseApiUrl;
 
   constructor(private momentService: MomentService) {}
+
   ngOnInit(): void {
     this.momentService.getMoments().subscribe((item) => {
       const data = item.data;
@@ -29,5 +31,14 @@ export class HomeComponent {
       this.allMoments = data;
       this.moments = data;
     });
+  }
+
+  search(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    const value = target.value.toLowerCase();
+
+    this.moments = this.allMoments.filter((moment) =>
+      moment.title.toLowerCase().includes(value)
+    );
   }
 }
