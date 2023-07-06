@@ -22,10 +22,8 @@ export class HomeComponent {
   ngOnInit(): void {
     this.momentService.getMoments().subscribe((item) => {
       const data = item.data;
-      data.map((item) => {
-        item.created_at = new Date(item.created_at!).toLocaleDateString(
-          'en-US'
-        );
+      data.forEach((element) => {
+        element.created_at = new Date(element.created_at!).toLocaleDateString();
       });
 
       this.allMoments = data;
