@@ -10,15 +10,24 @@ import { IMoment } from 'src/app/shared/models/moment';
 export class MomentFormComponent {
   @Output() onSubmit = new EventEmitter<IMoment>();
   @Input() button_text!: string;
+  @Input() momentData: IMoment | null = null;
   momentForm!: FormGroup;
   selectedImage: File | null = null;
 
+  handleImageRequired() {
+    return this.momentData ? null : [Validators.required];
+  }
+
   ngOnInit(): void {
     this.momentForm = new FormGroup({
-      id: new FormControl(''),
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      image: new FormControl('', [Validators.required]),
+      id: new FormControl(this.momentData?.id ?? ''),
+      title: new FormControl(this.momentData?.title ?? '', [
+        Validators.required,
+      ]),
+      description: new FormControl(this.momentData?.description ?? '', [
+        Validators.required,
+      ]),
+      image: new FormControl('', this.handleImageRequired()),
     });
   }
 
